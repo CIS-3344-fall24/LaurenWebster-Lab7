@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Order Details</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+    <h1>Customer Order Details</h1>
+    <div id="orderTable"></div>
+    <script>
+        const ordersJSON = `[{
+                "customer": {
+                    "name": "Jane Doe",
+                    "email": "jane.doe@example.com"
+                },
+                "items": [
+                    { "name": "Laptop", "price": 1200, "quantity": 1 },
+                    { "name": "Mouse", "price": 50, "quantity": 2 }
+                ],
+                "payment": {
+                    "method": "Credit Card",
+                    "status": "Paid"
+                }
+            },
+            {
+                "customer": {
+                    "name": "John Smith",
+                    "email": "john.smith@example.com"
+                },
+                "items": [
+                    { "name": "Monitor", "price": 300, "quantity": 1 },
+                    { "name": "Keyboard", "price": 100, "quantity": 1 }
+                ],
+                "payment": {
+                    "method": "PayPal",
+                    "status": "Paid"
+                }
+            }
+        ]`;
+
+        const orders = JSON.parse(ordersJSON);
+
+        function displayOrderDetails() {
+            const table = document.createElement("table");
+            const headerRow = table.insertRow();
+            const headers = ["Name", "Email", "Items Bought", "Quantity", "Total Order Price"];
+
+            // Create header row
+            headers.forEach(headerText => {
+                const header = document.createElement("th");
+                header.textContent = headerText;
+                headerRow.appendChild(header);
+            });
+
+            // Create rows for each order
+            orders.forEach(order => {
+                let totalOrderPrice = 0;
+                let itemsBought = "";
+                let totalQuantity = 0;
+
+                order.items.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    totalOrderPrice += itemTotal;
+                    itemsBought += `${item.name} (x${item.quantity}), `;
+                    totalQuantity += item.quantity;
+                });
+
+                itemsBought = itemsBought.slice(0, -2); // Remove trailing comma and space
+
+                const row = table.insertRow();
+
+                const nameCell = row.insertCell();
+                nameCell.textContent = order.customer.name;
+
+                const emailCell = row.insertCell();
+                emailCell.textContent = order.customer.email;
+
+                const itemsCell = row.insertCell();
+                itemsCell.textContent = itemsBought;
+
+                const quantityCell = row.insertCell();
+                quantityCell.textContent = totalQuantity;
+
+                const totalPriceCell = row.insertCell();
+                totalPriceCell.textContent = `$${totalOrderPrice}`;
+            });
+
+            document.getElementById("orderTable").appendChild(table);
+        }
+
+        displayOrderDetails();
+    </script>
+</body>
+</html>

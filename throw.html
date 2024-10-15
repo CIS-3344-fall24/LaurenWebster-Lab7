@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Throw Multiple Errors</title>
+</head>
+<body>
+    <script>
+    function validateDetails(user) {
+        try {
+            if (!user.name) {
+                throw new Error("Name cannot be empty");
+            }
+        } catch (error) {
+            console.log("Error: " + error.message);
+        }
+
+        try {
+            if (user.age < 18) {
+                throw new Error("User must be at least 18 years old");
+            }
+        } catch (error) {
+            console.log("Error: " + error.message);
+        }
+
+        try {
+            if (!user.email || !user.email.includes("@")) {
+                throw new Error("Invalid email address");
+            }
+        } catch (error) {
+            console.log("Error: " + error.message);
+        }
+    }
+
+    const user = { name: "", age: 17, email: "example.com" };
+
+    validateDetails(user);
+    </script>
+</body>
+</html>
